@@ -3,52 +3,54 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>基隆親友烤肉 2026/09/26</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<title>基隆親友中秋烤肉 2026/09/26</title>
 <style>
 :root{
   color-scheme:light dark;
-  --bg:#FFF4E6;
-  --bg-deco:radial-gradient(circle at 12% 8%, rgba(255,140,66,0.18), transparent 38%),
-            radial-gradient(circle at 88% 20%, rgba(30,136,168,0.14), transparent 40%),
-            radial-gradient(circle at 50% 100%, rgba(255,201,71,0.18), transparent 45%);
-  --surface:#FFFFFF;
-  --surface-2:#FFF1DF;
-  --ink:#2A1B10;
-  --ink-dim:#7A5C44;
-  --line:rgba(42,27,16,0.12);
-  --accent:#FF6B35;
-  --accent-2:#FF8C42;
+  /* 莫蘭迪色系：低飽和、帶灰的大地色 */
+  --bg:#EFEAE4;
+  --bg-deco:radial-gradient(circle at 12% 8%, rgba(196,145,122,0.16), transparent 38%),
+            radial-gradient(circle at 88% 20%, rgba(143,166,163,0.16), transparent 40%),
+            radial-gradient(circle at 50% 100%, rgba(201,180,138,0.14), transparent 45%);
+  --surface:#F8F5F1;
+  --surface-2:#ECE5DD;
+  --ink:#4A4541;
+  --ink-dim:#8B837B;
+  --line:rgba(74,69,65,0.12);
+  --accent:#B8836F;
+  --accent-2:#C99A88;
   --accent-ink:#FFFFFF;
-  --sea:#1E88A8;
-  --sea-bg:rgba(30,136,168,0.12);
-  --gold:#F5A623;
-  --good:#2E8B57;
-  --good-bg:rgba(46,139,87,0.13);
-  --shadow:rgba(120,60,20,0.14);
-  --hero-grad:linear-gradient(135deg,#FF6B35 0%,#FF8C42 45%,#FFB347 100%);
+  --accent-rgb:184,131,111;
+  --sea:#7F9A97;
+  --sea-bg:rgba(127,154,151,0.16);
+  --gold:#C2AB84;
+  --good:#8A9E86;
+  --good-bg:rgba(138,158,134,0.16);
+  --shadow:rgba(74,69,65,0.10);
+  --hero-grad:linear-gradient(135deg,#B8836F 0%,#C99A88 50%,#D3B39A 100%);
 }
 @media (prefers-color-scheme: dark){
   :root{
-    --bg:#16213A;
-    --bg-deco:radial-gradient(circle at 12% 8%, rgba(255,120,60,0.22), transparent 40%),
-              radial-gradient(circle at 88% 20%, rgba(60,170,210,0.18), transparent 40%),
-              radial-gradient(circle at 50% 100%, rgba(245,166,35,0.14), transparent 45%);
-    --surface:#1F2B4D;
-    --surface-2:#283660;
-    --ink:#FFF3E4;
-    --ink-dim:#C4B4A0;
-    --line:rgba(255,243,228,0.14);
-    --accent:#FF8A5C;
-    --accent-2:#FFA26B;
-    --accent-ink:#1B1409;
-    --sea:#5BC0DE;
-    --sea-bg:rgba(91,192,222,0.16);
-    --gold:#FFC857;
-    --good:#7ED49A;
-    --good-bg:rgba(126,212,154,0.16);
-    --shadow:rgba(0,0,0,0.4);
-    --hero-grad:linear-gradient(135deg,#E85D2C 0%,#F07A3A 45%,#F5A040 100%);
+    --bg:#35322F;
+    --bg-deco:radial-gradient(circle at 12% 8%, rgba(201,154,136,0.16), transparent 40%),
+              radial-gradient(circle at 88% 20%, rgba(143,166,163,0.14), transparent 40%),
+              radial-gradient(circle at 50% 100%, rgba(194,171,132,0.12), transparent 45%);
+    --surface:#413D39;
+    --surface-2:#4C4743;
+    --ink:#EAE4DD;
+    --ink-dim:#ADA49B;
+    --line:rgba(234,228,221,0.13);
+    --accent:#C99A88;
+    --accent-2:#D3B39A;
+    --accent-ink:#2C2825;
+    --accent-rgb:201,154,136;
+    --sea:#94ADAA;
+    --sea-bg:rgba(148,173,170,0.18);
+    --gold:#CDB892;
+    --good:#9DB098;
+    --good-bg:rgba(157,176,152,0.18);
+    --shadow:rgba(0,0,0,0.35);
+    --hero-grad:linear-gradient(135deg,#A8766A 0%,#B98C7C 50%,#C4A48C 100%);
   }
 }
 *{box-sizing:border-box;}
@@ -57,13 +59,13 @@ body{
   background:var(--bg-deco),var(--bg);
   background-attachment:fixed;
   color:var(--ink);
-  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  font-family:"Microsoft JhengHei","微軟正黑體","PingFang TC",sans-serif;
   padding-inline:16px;
   padding-block:0 40px;
   max-width:640px;
   margin:0 auto;
 }
-h1,h2,h3{font-family:"Noto Serif TC","Noto Sans TC",serif;text-wrap:balance;margin:0;}
+h1,h2,h3{font-family:inherit;text-wrap:balance;margin:0;}
 button{font-family:inherit;}
 input,textarea{font-family:inherit;font-size:15px;}
 
@@ -102,7 +104,7 @@ input,textarea{font-family:inherit;font-size:15px;}
   border-radius:999px;
   white-space:nowrap;
   font-variant-numeric:tabular-nums;
-  box-shadow:0 3px 10px rgba(255,107,53,0.35);
+  box-shadow:0 3px 10px rgba(var(--accent-rgb),0.35);
 }
 .status-pill{
   font-size:11px;color:var(--ink-dim);display:flex;align-items:center;gap:5px;margin-top:2px;
@@ -122,7 +124,7 @@ input,textarea{font-family:inherit;font-size:15px;}
   margin-top:18px;
   display:grid;
   gap:8px;
-  box-shadow:0 10px 28px rgba(255,107,53,0.30);
+  box-shadow:0 10px 28px rgba(var(--accent-rgb),0.30);
 }
 .event-card::before{
   content:"🍖 🌽 🦐 🍢 🍺";
@@ -142,7 +144,6 @@ input,textarea{font-family:inherit;font-size:15px;}
   pointer-events:none;
 }
 .event-card .hero-title{
-  font-family:"Noto Serif TC","Noto Sans TC",serif;
   font-size:24px;font-weight:700;line-height:1.2;
   position:relative;
 }
@@ -183,7 +184,7 @@ section{margin-top:30px;}
   padding:10px 12px;
   transition:border-color .15s, box-shadow .15s;
 }
-.field input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,107,53,0.18);}
+.field input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(var(--accent-rgb),0.18);}
 
 .btn{
   border:none;
@@ -196,10 +197,10 @@ section{margin-top:30px;}
 }
 .btn:active{transform:scale(0.97);}
 .btn:disabled{opacity:.5;cursor:default;}
-.btn-primary{background:var(--hero-grad);color:#fff;box-shadow:0 4px 12px rgba(255,107,53,0.30);}
+.btn-primary{background:var(--hero-grad);color:#fff;box-shadow:0 4px 12px rgba(var(--accent-rgb),0.30);}
 .btn-primary:hover{filter:brightness(1.06);}
 .btn-ghost{background:transparent;color:var(--accent);border:1.5px solid var(--accent);}
-.btn-ghost:hover{background:rgba(255,107,53,0.08);}
+.btn-ghost:hover{background:rgba(var(--accent-rgb),0.08);}
 .btn-small{padding:6px 12px;font-size:13px;border-radius:9px;}
 .btn-row{margin-top:12px;display:flex;justify-content:flex-end;align-items:center;gap:10px;flex-wrap:wrap;}
 .form-msg{font-size:12.5px;color:var(--ink-dim);}
@@ -279,6 +280,7 @@ section{margin-top:30px;}
 .item-row:last-of-type{border-bottom:none;}
 .item-top{display:flex;align-items:center;justify-content:space-between;gap:10px;}
 .item-name{font-size:14px;font-weight:500;}
+.item-hint{font-size:11.5px;font-weight:400;color:var(--ink-dim);opacity:.5;margin-left:8px;}
 .claims{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
 .chip{
   background:var(--good-bg);color:var(--good);font-size:12.5px;font-weight:600;
@@ -319,7 +321,7 @@ section{margin-top:30px;}
 <div class="topbar">
   <div class="moon">🔥</div>
   <div class="titles">
-    <h1>基隆親友烤肉</h1>
+    <h1>基隆親友中秋烤肉</h1>
     <div class="sub">2026/09/26（六）・下午 4 點生火</div>
     <div class="status-pill"><span class="status-dot" id="statusDot"></span><span id="statusText">連線中…</span></div>
   </div>
@@ -405,14 +407,13 @@ const auth = getAuth(app);
 let currentUid = null;
 
 const CATEGORIES = [
-  { key:'staple', emoji:'🥩', name:'主食（肉類／海鮮）', items:['牛肉','羊肉','豬肉','雞肉','魚類','蝦類','貝類／軟體類','香腸','丸類','熟食／料理包','鍋物湯底'] },
-  { key:'side', emoji:'🥬', name:'副食／蔬菜', items:['豆製品（豆干／豆腐）','米血','甜不辣','葉菜類','菇類','玉米／筊白筍','南瓜／地瓜','高麗菜／美生菜','水果／糕餅','吐司／米腸'] },
-  { key:'condiment', emoji:'🧂', name:'調味與其他', items:['烤肉醬／沾醬','鹽／胡椒','蒜頭／薑片','醬油／蠔油','米酒','汽水／果汁／茶飲','啤酒','冰塊'] },
-  { key:'equipment', emoji:'🔧', name:'器材類', items:['烤肉網','刀具／剪刀','木炭','打火機／火種','卡式爐','烤盤／鍋具','竹籤／衛生筷','衛生碗盤杯','垃圾袋','濕紙巾／紙巾','冰桶／保冰袋','錫箔紙','免洗手套'] },
-  { key:'venue', emoji:'⛺', name:'場地／休閒設備', items:['桌','椅','帳篷／天幕','燈具','風扇','延長線','藍芽喇叭','桌巾'] }
+  { key:'food', emoji:'🍖', name:'食材', items:['肉類（牛、羊、豬、雞等）','海鮮（魚、蝦、蟹、貝、透抽軟絲等）','蔬菜（玉米、筊白筍、菇、青椒、葉菜類、櫛瓜、南瓜、地瓜、生菜等）','加工食品（香腸、丸、甜不辣、米腸米血、豆干豆皮等）','熟食（米飯、壽司、披薩、烤雞、麵包土司等）','水果／甜點（蛋糕、甜湯等）','飲料／酒水（酒類、非酒精類等）','調味料（烤肉醬／沾醬、鹽／胡椒、蒜頭／薑片、醬油／蠔油、米酒等）'] },
+  { key:'equipment', emoji:'🔧', name:'器材類', items:['生火用品（木炭、火種、打火機、噴槍、扇子等）','烤具（烤肉架／網、烤盤、鍋具、卡式爐、夾子、醬刷等）','餐具（碗盤杯、竹籤／衛生筷、免洗手套等）','保冷（冰塊、冰桶、保冰袋等）','耗材（垃圾袋、紙巾濕紙巾、錫箔紙、保鮮膜等）'] },
+  { key:'venue', emoji:'⛺', name:'場地／休閒設備', items:['桌椅（桌、椅、桌巾等）','遮陽照明（帳篷／天幕、燈具、延長線等）','娛樂（藍芽喇叭、風扇、桌遊、撲克牌、小朋友玩具等）'] },
+  { key:'work', emoji:'🙌', name:'工作', items:['生火顧火','烤手','收拾清潔'] }
 ];
 
-let openCat = 'staple';
+let openCat = 'food';
 let roster = [];
 let claims = {};     // itemKey -> [{id, name, detail, ownerUid}]
 let customItems = {}; // category -> [name]
@@ -432,6 +433,14 @@ function fmtTime(ts){
   var hh = String(d.getHours()).padStart(2,'0');
   var mi = String(d.getMinutes()).padStart(2,'0');
   return mm+'.'+dd+' '+hh+':'+mi;
+}
+
+// 「肉類（牛、羊、豬、雞等）」→ 主名稱正常字級，括號提示縮小淡化；資料 key 仍用完整名稱
+function itemLabel(name){
+  var i = name.indexOf('（');
+  if(i <= 0) return esc(name);
+  var hint = name.slice(i).replace(/^（/,'').replace(/）$/,'');  // 顯示時去掉括號
+  return esc(name.slice(0,i)) + '<span class="item-hint">' + esc(hint) + '</span>';
 }
 
 function itemsFor(cat){
@@ -518,7 +527,7 @@ function renderCategories(){
       }).join('');
       return '<div class="item-row">'+
         '<div class="item-top">'+
-          '<span class="item-name">'+esc(name)+'</span>'+
+          '<span class="item-name">'+itemLabel(name)+'</span>'+
           '<button class="btn btn-ghost btn-small" data-claim-toggle="'+esc(k)+'">＋ 我要認領</button>'+
         '</div>'+
         (chips ? '<div class="claims">'+chips+'</div>' : '')+

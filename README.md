@@ -1,8 +1,8 @@
-# 基隆親友烤肉 報名網頁
+# 基隆親友中秋烤肉 報名網頁
 
 **網址：https://evan-yufanlin.github.io/keelung-bbq/**
 
-2026/09/26（六）基隆親友烤肉的報名與物資認領頁面。
+2026/09/26（六）基隆親友中秋烤肉的報名與物資認領頁面。
 純靜態網頁（GitHub Pages）+ Firebase Firestore + 匿名驗證，架構與 [樹林金蘭會館版](https://github.com/evan-yufanlin/jinlan-bbq) 相同，但使用獨立的 GitHub repo 與 Firebase 專案。
 
 ## 檔案
