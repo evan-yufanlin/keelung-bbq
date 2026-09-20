@@ -287,8 +287,14 @@ section{margin-top:30px;}
 .item-row{padding:10px 0;border-bottom:1px dashed var(--line);}
 .item-row:last-of-type{border-bottom:none;}
 .item-top{display:flex;align-items:center;justify-content:space-between;gap:10px;}
-.item-name{font-size:14px;font-weight:500;}
+.item-top .btn{white-space:nowrap;flex-shrink:0;}  /* 認領按鈕永遠一行 */
+.item-name{font-size:14px;font-weight:500;min-width:0;}
 .item-hint{font-size:11.5px;font-weight:400;color:var(--ink-dim);opacity:.5;margin-left:8px;}
+/* 窄螢幕：提示獨立一行放在名稱下方，名稱行與按鈕對齊 */
+@media (max-width:520px){
+  .item-top{align-items:flex-start;}
+  .item-hint{display:block;margin-left:0;margin-top:2px;line-height:1.4;}
+}
 .claims{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
 .chip{
   background:var(--good-bg);color:var(--good);font-size:12.5px;font-weight:600;
@@ -415,9 +421,9 @@ const auth = getAuth(app);
 let currentUid = null;
 
 const CATEGORIES = [
-  { key:'food', emoji:'🍖', name:'食材', items:['肉類（牛、羊、豬、雞等）','海鮮（魚、蝦、蟹、貝、透抽軟絲等）','蔬菜（玉米、筊白筍、菇、青椒、葉菜類、櫛瓜、南瓜、地瓜、生菜等）','加工食品（香腸、丸、甜不辣、米腸米血、豆干豆皮等）','熟食（米飯、壽司、披薩、烤雞、麵包土司等）','水果／甜點（蛋糕、甜湯等）','飲料／酒水（酒類、非酒精類等）','調味料（烤肉醬／沾醬、鹽／胡椒、蒜頭／薑片、醬油／蠔油、米酒等）'] },
-  { key:'equipment', emoji:'🔧', name:'器材類', items:['生火用品（木炭、火種、打火機、噴槍、扇子等）','烤具（烤肉架／網、烤盤、鍋具、卡式爐、夾子、醬刷等）','餐具（碗盤杯、竹籤／衛生筷、免洗手套等）','保冷（冰塊、冰桶、保冰袋等）','耗材（垃圾袋、紙巾濕紙巾、錫箔紙、保鮮膜等）'] },
-  { key:'venue', emoji:'⛺', name:'場地／休閒設備', items:['桌椅（桌、椅、桌巾等）','遮陽照明（帳篷／天幕、燈具、延長線等）','娛樂（藍芽喇叭、風扇、桌遊、撲克牌、小朋友玩具等）'] },
+  { key:'food', emoji:'🍖', name:'食材', items:['肉類（牛、羊、豬、雞）','海鮮（魚、蝦、蟹、貝、透抽軟絲等）','蔬菜（玉米、筊白筍、菇、青椒、櫛瓜、南瓜、生菜）','加工食品（香腸、丸類、甜不辣、米血、豆干）','熟食（米飯、壽司、披薩、烤雞、麵包土司等）','水果／甜點（蛋糕、甜湯等）','飲料／酒水（酒類、汽水、茶飲、果汁）','調味料（烤肉醬、鹽、胡椒、蒜、醬油、米酒）'] },
+  { key:'equipment', emoji:'🔧', name:'器材類', items:['生火用品（木炭、火種打火機、噴槍、扇子）','烤具（烤肉架/網、鍋盤、卡式爐、夾子、醬刷）','餐具（碗盤、杯子、筷子、竹籤、手套）','保冷（冰塊、冰桶、保冰袋）','耗材（垃圾袋、紙巾、錫箔紙、保鮮膜）'] },
+  { key:'venue', emoji:'⛺', name:'場地／休閒設備', items:['桌椅（桌、椅、桌巾）','遮陽照明（帳篷、天幕、燈具、延長線）','娛樂（喇叭、風扇、桌遊、撲克牌、玩具）'] },
   { key:'work', emoji:'🙌', name:'工作', items:['生火顧火','烤手','收拾清潔'] }
 ];
 
