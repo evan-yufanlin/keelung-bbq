@@ -206,7 +206,17 @@ section{margin-top:30px;}
 .form-msg{font-size:12.5px;color:var(--ink-dim);}
 
 /* ---- 名單 ---- */
-.roster{margin-top:14px;display:grid;grid-template-columns:minmax(0,1fr);gap:8px;}  /* minmax(0,1fr)：欄寬不得被長備註撐開 */
+.roster-toggle{
+  width:100%;margin-top:10px;
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  padding:10px 12px;background:none;border:1px dashed var(--line);border-radius:12px;
+  color:var(--accent);font-weight:700;font-size:13px;cursor:pointer;text-align:left;
+}
+.roster-toggle:hover{background:var(--surface-2);}
+.roster-toggle .arrow{transition:transform .15s ease;font-size:14px;display:inline-block;color:var(--ink-dim);}
+.roster-toggle.open .arrow{transform:rotate(90deg);}
+.roster{margin-top:8px;display:grid;grid-template-columns:minmax(0,1fr);gap:8px;}  /* minmax(0,1fr)：欄寬不得被長備註撐開 */
+.roster[hidden]{display:none;}  /* display:grid 會蓋掉 hidden，要補這行 */
 .roster-row{
   display:flex;align-items:center;gap:10px;
   padding:9px 12px;background:var(--surface-2);border-radius:12px;font-size:14px;
@@ -289,6 +299,13 @@ section{margin-top:30px;}
 .item-top{display:flex;align-items:center;justify-content:space-between;gap:10px;}
 .item-top .btn{white-space:nowrap;flex-shrink:0;}  /* 認領按鈕永遠一行 */
 .item-name{font-size:14px;font-weight:500;min-width:0;}
+.item-actions{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.item-del{
+  border:1px solid var(--line);background:var(--surface-2);color:var(--ink-dim);
+  width:24px;height:24px;border-radius:50%;font-size:13px;line-height:1;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;padding:0;
+}
+.item-del:hover{border-color:var(--accent);color:var(--accent);}
 .item-hint{font-size:11.5px;font-weight:400;color:var(--ink-dim);opacity:.5;margin-left:8px;}
 /* 窄螢幕：提示獨立一行放在名稱下方，名稱行與按鈕對齊 */
 @media (max-width:520px){
@@ -379,8 +396,11 @@ section{margin-top:30px;}
       <button class="btn btn-primary" id="submitHeadcount">送出回報</button>
     </div>
 
-    <div class="roster" id="rosterList"></div>
     <div class="totals" id="totalsLine"></div>
+    <button class="roster-toggle" id="rosterToggle" type="button">
+      <span id="rosterToggleText">查看名單</span><span class="arrow">›</span>
+    </button>
+    <div class="roster" id="rosterList" hidden></div>
   </div>
 </section>
 
@@ -428,9 +448,15 @@ const CATEGORIES = [
 ];
 
 let openCat = 'food';
+let rosterOpen = false;
+try { rosterOpen = localStorage.getItem('rosterOpen') === '1'; } catch(e) {}
+function setRosterOpen(v){
+  rosterOpen = v;
+  try { localStorage.setItem('rosterOpen', v ? '1' : '0'); } catch(e) {}
+}
 let roster = [];
 let claims = {};     // itemKey -> [{id, name, detail, ownerUid}]
-let customItems = {}; // category -> [name]
+let customItems = {}; // category -> [{id, name}]
 
 function esc(s){
   return String(s).replace(/[&<>"']/g, function(c){
@@ -457,8 +483,22 @@ function itemLabel(name){
   return esc(name.slice(0,i)) + '<span class="item-hint">' + esc(hint) + '</span>';
 }
 
+// 內建次項 + 大家自己新增的次項（自訂的帶 custom:true，才會顯示刪除鈕）
 function itemsFor(cat){
-  return cat.items.concat(customItems[cat.key] || []);
+  var out = cat.items.map(function(n){ return { name:n }; });
+  var seen = {};
+  cat.items.forEach(function(n){ seen[n] = true; });
+  (customItems[cat.key] || []).forEach(function(o){
+    if(seen[o.name]) return;
+    seen[o.name] = true;
+    out.push({ name:o.name, custom:true });
+  });
+  return out;
+}
+
+function catByKey(k){
+  for(var i=0;i<CATEGORIES.length;i++){ if(CATEGORIES[i].key===k) return CATEGORIES[i]; }
+  return null;
 }
 
 function findHeadcountByName(name){
@@ -510,6 +550,12 @@ function renderRoster(){
     '<div class="stat total"><span class="v">'+totalPeople+'</span><span class="k">共計</span></div>';
   document.getElementById('headerCount').textContent = totalPeople+' 人參加（'+totalAdults+'大'+totalKids+'小）';
 
+  var toggle = document.getElementById('rosterToggle');
+  document.getElementById('rosterToggleText').textContent =
+    (rosterOpen ? '收合名單' : '查看名單') + '（' + roster.length + ' 組）';
+  toggle.classList.toggle('open', rosterOpen);
+  list.hidden = !rosterOpen;
+
   list.querySelectorAll('[data-cancel-headcount]').forEach(function(btn){
     btn.addEventListener('click', function(){
       var id = btn.getAttribute('data-cancel-headcount');
@@ -526,12 +572,13 @@ function renderCategories(){
   var wrap = document.getElementById('categoryList');
   wrap.innerHTML = CATEGORIES.map(function(cat){
     var items = itemsFor(cat);
-    var claimedCount = items.filter(function(name){
-      return (claims[cat.key+'::'+name]||[]).length>0;
+    var claimedCount = items.filter(function(it){
+      return (claims[cat.key+'::'+it.name]||[]).length>0;
     }).length;
     var isOpen = openCat === cat.key;
 
-    var itemsHtml = items.map(function(name){
+    var itemsHtml = items.map(function(it){
+      var name = it.name;
       var k = cat.key+'::'+name;
       var list = claims[k] || [];
       var chips = list.map(function(c){
@@ -542,7 +589,10 @@ function renderCategories(){
       return '<div class="item-row">'+
         '<div class="item-top">'+
           '<span class="item-name">'+itemLabel(name)+'</span>'+
-          '<button class="btn btn-ghost btn-small" data-claim-toggle="'+esc(k)+'">＋ 我要認領</button>'+
+          '<span class="item-actions">'+
+            '<button class="btn btn-ghost btn-small" data-claim-toggle="'+esc(k)+'">＋ 我要認領</button>'+
+            (it.custom ? '<button class="item-del" data-del-item="'+esc(cat.key)+'" data-del-name="'+esc(name)+'" title="刪除這個自訂項目">×</button>' : '')+
+          '</span>'+
         '</div>'+
         (chips ? '<div class="claims">'+chips+'</div>' : '')+
         '<div class="claim-form" data-form-for="'+esc(k)+'">'+
@@ -614,6 +664,21 @@ function renderCategories(){
       deleteDoc(doc(db,'claims', id)).catch(function(err){ alert('取消失敗：'+err.message); });
     });
   });
+  wrap.querySelectorAll('[data-del-item]').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      var catKey = btn.getAttribute('data-del-item');
+      var name = btn.getAttribute('data-del-name');
+      var n = (claims[catKey+'::'+name] || []).length;
+      if(n > 0){ alert('「'+name+'」底下還有 '+n+' 筆認領，請先把認領取消，再刪除這個項目。'); return; }
+      if(!confirm('確定要刪除自訂項目「'+name+'」嗎？')) return;
+      var ids = (customItems[catKey] || []).filter(function(o){ return o.name === name; })
+                                           .map(function(o){ return o.id; });
+      openCat = catKey;
+      Promise.all(ids.map(function(id){ return deleteDoc(doc(db,'customItems', id)); }))
+        .catch(function(err){ alert('刪除失敗：'+err.message); });
+    });
+  });
   wrap.querySelectorAll('[data-add-submit]').forEach(function(btn){
     btn.addEventListener('click', function(){
       if(!currentUid){ alert('連線中，請稍等一下再試'); return; }
@@ -621,6 +686,11 @@ function renderCategories(){
       var input = wrap.querySelector('[data-add-item="'+catKey+'"]');
       var val = (input.value||'').trim();
       if(!val){ input.focus(); return; }
+      var cat = catByKey(catKey);
+      if(cat && itemsFor(cat).some(function(it){ return it.name === val; })){
+        alert('名稱重複：「'+val+'」已經在清單裡了，直接在上面認領就可以。');
+        openCat = catKey; renderCategories(); return;
+      }
       btn.disabled = true;
       addDoc(collection(db,'customItems'), { category: catKey, name: val, ts: serverTimestamp() })
         .then(function(){ openCat = catKey; input.value=''; })
@@ -631,6 +701,11 @@ function renderCategories(){
 }
 
 document.getElementById('nameInput').addEventListener('input', updateHeadcountButtons);
+
+document.getElementById('rosterToggle').addEventListener('click', function(){
+  setRosterOpen(!rosterOpen);
+  renderRoster();
+});
 
 document.getElementById('submitHeadcount').addEventListener('click', function(){
   if(!currentUid){ document.getElementById('headcountMsg').textContent = '連線中，請稍等一下再試'; return; }
@@ -658,6 +733,7 @@ document.getElementById('submitHeadcount').addEventListener('click', function(){
   btn.disabled = true;
   document.getElementById('headcountMsg').textContent = '送出中…';
   setDoc(ref, payload).then(function(){
+    setRosterOpen(true);
     document.getElementById('headcountMsg').textContent = '已送出！';
     document.getElementById('nameInput').value = '';
     document.getElementById('adultsInput').value = '1';
@@ -710,7 +786,7 @@ onSnapshot(query(collection(db,'customItems'), orderBy('ts')), function(snap){
   snap.docs.forEach(function(d){
     var c = d.data();
     if(!customItems[c.category]) customItems[c.category] = [];
-    if(customItems[c.category].indexOf(c.name) === -1) customItems[c.category].push(c.name);
+    customItems[c.category].push({ id:d.id, name:c.name });
   });
   renderCategories();
 });
